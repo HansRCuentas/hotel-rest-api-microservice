@@ -56,6 +56,7 @@ pipeline {
             agent any
             options { skipDefaultCheckout() }
             steps {
+                checkout scm
                 sh 'docker --version'
                 script {
 
