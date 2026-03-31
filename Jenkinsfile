@@ -58,7 +58,6 @@ pipeline {
         // }
         stage('DockerHub') {
             agent any
-            options { skipDefaultCheckout() }
             steps {
                 sh 'docker --version'
                 script {
