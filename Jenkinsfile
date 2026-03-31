@@ -62,7 +62,7 @@ pipeline {
 
                     def pom = readMavenPom file: 'pom.xml'
                     sh 'docker run --privileged --rm tonistiigi/binfmt --install all'
-                    sh 'docker buildx create --name hotel-builder --use || docker buildx use hotel-builder'
+                    sh 'docker buildx create --use'
                     sh 'docker buildx inspect --bootstrap'
 
                     sh 'docker buildx version'
