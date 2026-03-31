@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.11-eclipse-temurin-17'
-        }
-    }
+    agent none
     stages {
         // stage('Build') {
         //     steps {
@@ -58,13 +54,14 @@ pipeline {
         // }
         stage('DockerHub') {
             agent any
+            options { skipDefaultCheckout() }
             steps {
                 sh 'docker --version'
                 script {
 
                     def pom = readMavenPom file: 'pom.xml'
                     sh 'docker run --privileged --rm tonistiigi/binfmt --install all'
-                    sh 'docker buildx create --use'
+                    sh 'docker buildx create --name hotel-builder --use || docker buildx use hotel-builder'
                     sh 'docker buildx inspect --bootstrap'
 
                     sh 'docker buildx version'
