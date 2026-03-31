@@ -56,39 +56,6 @@ pipeline {
                 }
             }
         }
-        stage('Artifactory') {
-            steps {
-                script {
-
-                    sh 'env | sort'
-                    env.MAVEN_HOME = '/usr/share/maven'
-                    def releaseRepo = 'hotel-rest-api-microservice-release'
-                    def snapshotRepo = 'hotel-rest-api-microservice-snapshot'
-                    def server = Artifactory.server 'artifactory'
-                    
-                    def pom = readMavenPom file: 'pom.xml'
-                    println pom.groupId
-
-                    def groupIdPath = pom.groupId.replaceAll("\\.", "/")
-                    println groupIdPath
-
-                    def uploadSpec = """
-                        {
-                            "files": [
-                                {
-                                    "pattern": "target/.*.jar",
-                                    "target": "${releaseRepo}/${groupIdPath}/${pom.artifactId}/${pom.version}/",
-                                    "regexp": "true",
-                                    "props": "build.url=${RUN_DISPLAY_URL};build.user=${currentBuild.getBuildCauses()[0].userId}"
-                                }
-                            ]
-                        }
-                    """
-                    server.upload spec: uploadSpec
-
-                }
-            }
-        }
     }
     post {
         success {
