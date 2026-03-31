@@ -1,0 +1,95 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# hotel-rest-api
+
+REST API for hotel management built with Java / Maven / Spring Boot
+
+* Full integration with the latest **Spring** Framework 2.x: inversion of control, dependency injection, etc.
+* Packaging as a single jar with embedded container (tomcat 8)
+* Demonstrates how to set up healthcheck, metrics, info, environment, etc. endpoints automatically on a configured port. Inject your own health / metrics info with a few lines of code.
+* RESTful service using annotation: supports both XML and JSON request / response
+* Exception mapping from application exceptions to the right HTTP response with exception details in the body
+* *Spring Data* Integration with JPA/Hibernate
+* CRUD functionality with H2 in-memory data source using Spring *Repository* pattern
+* MockMVC test framework
+* Self-documented APIs: Swagger2 using annotations
+
+## Pre-requisites
+
+* [sdkman](https://sdkman.io/install)
+* [Apache Maven](https://maven.apache.org/install.html)
+* [curl](https://help.ubidots.com/en/articles/2165289-learn-how-to-install-run-curl-on-windows-macosx-linux)
+* [jq](https://github.com/stedolan/jq/wiki/Installation)
+* [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [http](https://httpie.io/cli)
+* [minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [Docker](https://docs.docker.com/engine/install/)
+
+## Build and Run
+
+This application is packaged as a jar which has Tomcat 8 embedded.
+
+* Clone this repository
+
+```bash
+git clone git@github.com:AndriyKalashnykov/spring-boot-rest-example.git
+cd spring-boot-rest-example
+```
+* Select JDK
+
+```bash
+sdk install java 18.0.1-tem
+sdk use java 18.0.1-tem
+```
+* Build the project and run the tests by running
+
+```bash
+mvn clean package
+```
+* Run the service
+
+```
+  mvn clean spring-boot:run -Dspring-boot.run.profiles=default
+```
+
+### Swagger UI documentation links, application health, configurations 
+
+```
+http://localhost:8080/swagger-ui/#/hotels
+
+http://localhost:8080/actuator/env
+http://localhost:8080/actuator/health
+http://localhost:8080/actuator/info
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/configprops
+
+```
+
+### Microservice API
+
+```
+curl -X POST 'http://localhost:8080/v1/hotels' --header 'Content-Type: application/json' --header 'Accept: application/json' --data @hotel.json --stderr -
+```
+or
+```
+http POST 'http://localhost:8080/v1/hotels' < hotel.json
+```
+or
+```
+curl -X POST 'http://localhost:8080/v1/hotels' --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"name":"Beds R Us","description":"Very basic, small rooms but clean","city":"Santa Ana","rating":2}' --stderr -
+```
+
+### Retrieve a paginated list of hotels
+
+```
+curl -X GET --silent 'http://localhost:8080/v1/hotels?page=0&size=10' --stderr -  2>&1 | jq .
+```
+or
+```
+http  'http://localhost:8080/v1/hotels?page=0&size=10'
+```
+### Swagger 2 API docs
+
+```
+xdg-open http://localhost:8080/swagger-ui/#/hotels
+```
+

@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spring-boot-rest-example
+  jmx:
+    enabled: false
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:bootexample;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
+  h2:
+    console:
+      enabled: true
+
+security:
+  basic:
+    enabled: false
+
+management:
+  context-path: "/actuator"
+  endpoints:
+    enabled-by-default: true
+    web:
+      base-path: "/actuator"
+      exposure:
+        include: "*"
+  security:
+    enabled: false
+
+project:
+  name: spring-boot-rest-example
+  version: 0.1
+  description: boot-example default description
+info:
+  application:
+    name: ${spring.application.name}
+    description: Spring Boot application
+    version: '@project.version@'
+    spring-boot-version: '@project.parent.version@'
+  build:
+    artifact: ${project.artifactId}
+    name: ${project.name}
+    description: ${project.description}
+    version: ${project.version}
+
+hotel.service:
+  name: 'default profile:'
