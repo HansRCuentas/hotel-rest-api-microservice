@@ -105,7 +105,6 @@ pipeline {
                     }
                 }
             }
-            }
         }
     }
     post {
